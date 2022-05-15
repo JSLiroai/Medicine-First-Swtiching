@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ResultActivity"></activity>
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".Searching.SearchActivity"></activity>
 
     </application>
 
