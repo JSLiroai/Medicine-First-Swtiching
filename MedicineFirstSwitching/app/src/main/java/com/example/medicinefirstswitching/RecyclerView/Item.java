@@ -1,11 +1,11 @@
 package com.example.medicinefirstswitching.RecyclerView;
 
 public class Item {
-    String symptom;
-    int imageSrc;
+    String name;
+    String imageSrc;
 
-    public Item(String symptom, int imageSrc){
-        this.symptom = symptom;
+    public Item(String symptom, String imageSrc){
+        this.name = symptom;
         this.imageSrc = imageSrc;
     }
 }
