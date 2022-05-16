@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import com.example.medicinefirstswitching.RecyclerView.Item;
 import com.example.medicinefirstswitching.RecyclerView.MainAdapter;
+import com.example.medicinefirstswitching.Searching.SearchActivity;
 
 import java.util.ArrayList;
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(intent);
             }
         });
