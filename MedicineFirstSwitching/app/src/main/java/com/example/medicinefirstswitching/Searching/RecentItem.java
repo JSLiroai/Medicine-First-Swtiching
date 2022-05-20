@@ -1,14 +1,16 @@
 package com.example.medicinefirstswitching.Searching;
 
-public class SearchItem {
+public class RecentItem {
     private String item;
-    private String explain;
+    private String date;
 
-    public SearchItem(String item) {
+    public RecentItem(String item, String date) {
         this.item = item;
+        this.date = date;
     }
 
     public String getItem() {
         return item;
     }
+    public String getDate() { return date; }
 }

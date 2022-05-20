@@ -61,7 +61,7 @@ public class RecentSearchAdapter extends RecyclerView.Adapter<RecentSearchAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.getTextView().setText(localDataSet.get(position).getText());
+        viewHolder.getTextView().setText(localDataSet.get(position).getItem());
     }
 
     @Override
