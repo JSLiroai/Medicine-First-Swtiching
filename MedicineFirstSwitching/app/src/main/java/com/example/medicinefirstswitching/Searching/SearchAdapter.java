@@ -14,17 +14,120 @@ import com.example.medicinefirstswitching.R;
 import java.util.ArrayList;
 
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
-    protected ArrayList<SearchItem> localDataSet;
+public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    final int VIEW_TYPE_RECENT = 0;
+    final int ViEW_TYPE_COMPLETE = 1;
 
+    protected ArrayList<RecentItem> recentDataSet;
+    protected ArrayList<SearchItem> mediDataSet;
+
+    //ViewAdapter
+    SearchAdapter(ArrayList<RecentItem> recentData, ArrayList<SearchItem> mediData) {
+        recentDataSet = recentData;
+        mediDataSet = mediData;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        if(viewType == VIEW_TYPE_RECENT) {
+            View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_recentitem, viewGroup, false);
+            return new RecentViewHolder(itemView);
+        }
+        if(viewType == ViEW_TYPE_COMPLETE) {
+            View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_item, viewGroup, false);
+            return new SearchViewHolder(itemView);
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof RecentViewHolder) {
+            ((RecentViewHolder) holder).populate(recentDataSet.get(position));
+        }
+        if(holder instanceof SearchViewHolder) {
+            ((SearchViewHolder) holder).populate(mediDataSet.get(position - recentDataSet.size()));
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return recentDataSet.size() + mediDataSet.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position < recentDataSet.size()) {
+            return VIEW_TYPE_RECENT;
+        }
+
+        if(position - recentDataSet.size() < mediDataSet.size()) {
+            return ViEW_TYPE_COMPLETE;
+        }
+
+        return -1;
+    }
+
+    public void filterList(ArrayList<SearchItem> filteredList) {
+        mediDataSet = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public void setHistory(ArrayList<RecentItem> historyList) {
+        recentDataSet = historyList;
+        notifyDataSetChanged();
+    }
+
+    //RecentViewHolder
+    public static class RecentViewHolder extends RecyclerView.ViewHolder {
+        private final TextView textItem;
+        private final TextView textDate;
+        private final ImageButton btn1;
+
+        public RecentViewHolder(View view) {
+            super(view);
+
+            textItem = (TextView) view.findViewById(R.id.search_text_recentItem);
+            textDate = (TextView) view.findViewById(R.id.search_text_date);
+            btn1 = (ImageButton) view.findViewById(R.id.search_btn_delItem);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION) {
+                        EditText edit = (EditText) view.findViewById(R.id.search_edit_searchText);
+                        edit.setText(textItem.getText());
+                    }
+                }
+            });
+
+            btn1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //delete history
+                }
+            });
+        }
+
+        public void populate(RecentItem recentItem) {
+            textItem.setText(recentItem.getItem());
+            textDate.setText(recentItem.getDate());
+        }
+
+        public TextView getTextView() { return textItem; }
+    }
+
+    //MedicineViewHolder
     public static class SearchViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView1;
+        private final TextView textItem;
         private final ImageButton btn1;
 
         public SearchViewHolder(View view) {
             super(view);
 
-            textView1 = (TextView) view.findViewById(R.id.search_text_recentItem);
+            textItem = (TextView) view.findViewById(R.id.search_text_searchItem);
             btn1 = (ImageButton) view.findViewById(R.id.search_btn_loadItem);
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -34,7 +137,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                     if(pos != RecyclerView.NO_POSITION) {
                         //consider go result directly
                         EditText edit = (EditText) view.findViewById(R.id.search_edit_searchText);
-                        edit.setText(textView1.getText());
+                        edit.setText(textItem.getText());
                     }
                 }
             });
@@ -43,39 +146,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 @Override
                 public void onClick(View view) {
                     EditText edit = (EditText) view.findViewById(R.id.search_edit_searchText);
-                    edit.setText(textView1.getText());
+                    edit.setText(textItem.getText());
                 }
             });
         }
 
-        public TextView getTextView() { return textView1; }
-    }
+        public void populate(SearchItem searchItem) {
+            textItem.setText(searchItem.getItem());
+        }
 
-    SearchAdapter(ArrayList<SearchItem> dataSet) {
-        localDataSet = dataSet;
-    }
-
-    @Override
-    public SearchViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_item, viewGroup, false);
-
-        return new SearchViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(SearchViewHolder viewHolder, final int position) {
-        SearchItem currentItem = localDataSet.get(position);
-
-        viewHolder.getTextView().setText(currentItem.getText());
-    }
-
-    @Override
-    public int getItemCount() {
-        return localDataSet.size();
-    }
-
-    public void filterList(ArrayList<SearchItem> filteredList) {
-        localDataSet = filteredList;
-        notifyDataSetChanged();
+        public TextView getTextView() { return textItem; }
     }
 }
