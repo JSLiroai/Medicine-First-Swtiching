@@ -1,5 +1,6 @@
 package com.example.medicinefirstswitching.Searching;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,13 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     final int VIEW_TYPE_RECENT = 0;
     final int ViEW_TYPE_COMPLETE = 1;
 
+    protected static SearchActivity activity;
     protected ArrayList<RecentItem> recentDataSet;
     protected ArrayList<SearchItem> mediDataSet;
 
     //ViewAdapter
-    SearchAdapter(ArrayList<RecentItem> recentData, ArrayList<SearchItem> mediData) {
+    SearchAdapter(SearchActivity activity, ArrayList<RecentItem> recentData, ArrayList<SearchItem> mediData) {
+        this.activity = activity;
         recentDataSet = recentData;
         mediDataSet = mediData;
     }
@@ -97,8 +100,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 public void onClick(View view) {
                     int pos = getAdapterPosition();
                     if(pos != RecyclerView.NO_POSITION) {
-                        EditText edit = (EditText) view.findViewById(R.id.search_edit_searchText);
-                        edit.setText(textItem.getText());
+                        EditText edit = activity.getEditText();
+                        edit.setText(textItem.getText().toString());
+                        edit.setSelection(edit.length());
                     }
                 }
             });
@@ -106,7 +110,10 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             btn1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //delete history
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION) {
+                        activity.delHistory(textItem.getText().toString());
+                    }
                 }
             });
         }
@@ -135,9 +142,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 public void onClick(View view) {
                     int pos = getAdapterPosition();
                     if(pos != RecyclerView.NO_POSITION) {
-                        //consider go result directly
-                        EditText edit = (EditText) view.findViewById(R.id.search_edit_searchText);
-                        edit.setText(textItem.getText());
+                        EditText edit = activity.getEditText();
+                        edit.setText(textItem.getText().toString());
+                        edit.setSelection(edit.length());
                     }
                 }
             });
@@ -145,8 +152,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             btn1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EditText edit = (EditText) view.findViewById(R.id.search_edit_searchText);
-                    edit.setText(textItem.getText());
+                    EditText edit = activity.getEditText();
+                    edit.setText(textItem.getText().toString());
+                    edit.setSelection(edit.length());
                 }
             });
         }

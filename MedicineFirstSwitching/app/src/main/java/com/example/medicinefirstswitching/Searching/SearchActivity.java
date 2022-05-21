@@ -1,12 +1,11 @@
 package com.example.medicinefirstswitching.Searching;
 
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medicinefirstswitching.R;
+import com.example.medicinefirstswitching.ResultActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,7 +38,9 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<RecentItem> recentDataList;
 
     private ImageButton searchBtn;
-    EditText editText;
+    private EditText editText;
+    private ImageButton btnDelText;
+    private ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +49,12 @@ public class SearchActivity extends AppCompatActivity {
 
         editText = findViewById(R.id.search_edit_searchText);
         searchBtn = findViewById(R.id.search_btn_seearch);
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addHistoryData(editText.getText().toString());
-            }
-        });
+        btnDelText = findViewById(R.id.search_btn_delText);
+        btnBack = findViewById(R.id.search_btn_back);
 
         createDataList();
+
+        buildButtons();
         buildRecyclerView();
         buildEditText();
     }
@@ -65,31 +65,50 @@ public class SearchActivity extends AppCompatActivity {
         searchDataList = new ArrayList<SearchItem>();
         searchDataList.add(new SearchItem("asd"));
         searchDataList.add(new SearchItem("asde"));
+        searchDataList.add(new SearchItem("감기"));
+    }
+
+    private void buildButtons() {
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startResult(editText.getText().toString());
+            }
+        });
+        btnDelText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText.setText("");
+            }
+        });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void buildRecyclerView() {
         searchRecyclerView = findViewById(R.id.search_recycler);
         searchRecyclerView.setHasFixedSize(true);
         searchLayoutManager = new LinearLayoutManager(this);
-        searchAdapter = new SearchAdapter(recentDataList, searchDataList);//Early recycleAdapter setting
+        searchAdapter = new SearchAdapter(this, recentDataList, searchDataList);
 
         searchRecyclerView.setLayoutManager(searchLayoutManager);
         searchRecyclerView.setAdapter(searchAdapter);
     }
 
     private void buildEditText() {
+        editText.requestFocus();
         filter(editText.getText().toString());
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -101,9 +120,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if(actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    addHistoryData(textView.getText().toString());
-                    //start result activity
-
+                    startResult(editText.getText().toString());
                     return true;
                 }
                 return false;
@@ -112,14 +129,24 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void filter(String text) {
-        //add symptom check
+        //TODO:증상추가
         ArrayList<SearchItem> searchList = new ArrayList<>();
         if(text.equals("")) {
+            btnDelText.setVisibility(View.INVISIBLE);
+
+            ((LinearLayoutManager) searchLayoutManager).setReverseLayout(true);
+            ((LinearLayoutManager) searchLayoutManager).setStackFromEnd(true);
+
             searchAdapter.setHistory(recentDataList);
         }
         else {
+            btnDelText.setVisibility(View.VISIBLE);
+
             ArrayList<RecentItem> history = new ArrayList<RecentItem>();
             searchAdapter.setHistory(history);
+
+            ((LinearLayoutManager) searchLayoutManager).setReverseLayout(false);
+            ((LinearLayoutManager) searchLayoutManager).setStackFromEnd(false);
 
             for(SearchItem item : searchDataList) {
                 if(item.getItem().toLowerCase().contains(text.toLowerCase())) {
@@ -127,8 +154,6 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         }
-
-        Log.v("debug", searchList.toString());
         searchAdapter.filterList(searchList);
     }
 
@@ -146,11 +171,71 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void addHistoryData(String item) {
+        for(RecentItem history : recentDataList) {
+            if(history.getItem().equals(item)) {
+                recentDataList.remove(history);
+                break;
+            }
+        }
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd", java.util.Locale.getDefault());
         String date = dateFormat.format(new Date());
 
         RecentItem data = new RecentItem(item, date);
         recentDataList.add(data);
+        saveHistory();
+    }
+
+    private void saveHistory() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(recentDataList);
+        editor.putString(SEARCH_HISTORY, json);
+        editor.commit();
+    }
+
+    public void delHistory(String item) {
+        for(RecentItem history : recentDataList) {
+            if(history.getItem().equals(item)) {
+                recentDataList.remove(history);
+                break;
+            }
+        }
+
+        searchAdapter.setHistory(recentDataList);
+        saveHistory();
+    }
+    //TODO:전체삭제추가
+    private void resetHistory() {
+        recentDataList.clear();
+        searchAdapter.setHistory(recentDataList);
+        saveHistory();
+    }
+
+    public EditText getEditText() {
+        return editText;
+    }
+
+    private void startResult(String target) {
+        SearchItem checkTarget = null;
+        for(SearchItem item : searchDataList) {
+            if(item.getItem().equals(target)) {
+                checkTarget = item;
+                break;
+            }
+        }
+
+        if(checkTarget == null) {
+            //TODO:notify wrong approach
+        }
+        else {
+            addHistoryData(target);
+
+            Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+            intent.putExtra("String-SearchedItem",target);
+            startActivity(intent);
+        }
     }
 
 }
