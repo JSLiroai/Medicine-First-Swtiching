@@ -1,6 +1,7 @@
 package com.example.medicinefirstswitching;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,11 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.example.medicinefirstswitching.RecyclerView.Item;
 import com.example.medicinefirstswitching.RecyclerView.MainAdapter;
 import com.example.medicinefirstswitching.Searching.SearchActivity;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 
@@ -24,7 +27,11 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MainAdapter adapter;
     private GridLayoutManager layoutManager;
-    private Button button;
+    private Button searchButton;
+    private SlidingUpPanelLayout slidingUpPanelLayout;
+    private ImageButton slideHomeBtn;
+    private ImageButton slideSearchBtn;
+
     public ArrayList<Item> testList = new ArrayList<Item>() {{
         add(new Item("감기약","aaa.jpg"));
         add(new Item("속쓰림","aaa.jpg"));
@@ -44,12 +51,15 @@ public class MainActivity extends AppCompatActivity {
         //VIEW MATCHING
         recyclerView = (RecyclerView)findViewById(R.id.main_recyclerview);
         spinner = (Spinner)findViewById(R.id.main_spn_travel);
+        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.main_slideLayout_main);
+        slideHomeBtn = findViewById(R.id.main_btn_slideHome);
+        slideSearchBtn = findViewById(R.id.main_btn_slideSearch);
+        searchButton = (Button)findViewById(R.id.main_btn_search);
 
 
 
         //SEARCH BUTTON
-        button = (Button)findViewById(R.id.main_btn_search);
-        button.setOnClickListener(new View.OnClickListener(){
+        searchButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
@@ -57,6 +67,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //SLIDE SEARCH BUTTON
+        slideSearchBtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //SLIDE HOME BUTTON
+        slideHomeBtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+        });
+
 
 
         //SPINNER
@@ -72,10 +102,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //SLIDING UP PANEL
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            //패널이 슬라이드 중일 때
+            public void onPanelSlide(View panel, float slideOffset) {
+
+                slideHomeBtn.setAlpha(slideOffset);
+                slideSearchBtn.setAlpha(slideOffset);
+
+            }
+
+            @Override
+            //패널의 상태가 변했을 때
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+
+            }
+        });
+
+
         //RECYCLERVIEW
         adapter = new MainAdapter(getApplicationContext(), testList);
         layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
     }
+
 }

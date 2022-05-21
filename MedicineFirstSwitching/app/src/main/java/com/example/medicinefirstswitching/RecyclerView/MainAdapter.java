@@ -1,6 +1,7 @@
 package com.example.medicinefirstswitching.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medicinefirstswitching.R;
+import com.example.medicinefirstswitching.ResultActivity;
 
 import java.util.ArrayList;
 
@@ -28,6 +30,16 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
     public void onBindViewHolder(MyViewHolder holder, int position) {
             Item item = list.get(position);
             holder.button.setText(item.name);
+            holder.button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ResultActivity.class);
+                    context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+
+                }
+            });
+
     }
 
     @Override
