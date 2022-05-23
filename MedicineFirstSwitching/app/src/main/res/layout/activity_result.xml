@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -21,7 +22,7 @@
         android:paddingBottom="20dp"
         android:outlineProvider="none"
         android:gravity="center"
-        android:background="@drawable/border_tv_background"
+        android:background="@drawable/border_bottom_background"
         android:src="@drawable/ic_home"/>
 
     <TextView
@@ -30,12 +31,13 @@
         android:layout_height="0dp"
         android:paddingEnd="0dp"
         android:paddingStart="20dp"
+        android:background="@drawable/border_bottom_background"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/result_btn_home"
         app:layout_constraintStart_toEndOf="@+id/result_btn_home"
         app:layout_constraintEnd_toStartOf="@+id/result_btn_close"
 
-        android:background="@drawable/border_tv_background"
         android:text="Dayquil"
         android:textColor="#8F8F8F"
         android:textSize="20sp"
@@ -49,17 +51,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
+        android:background="@drawable/border_bottom_background"
         android:paddingEnd="20dp"
         android:paddingStart="0dp"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:outlineProvider="none"
         android:gravity="center"
-        android:background="@drawable/border_tv_background"
         android:src="@drawable/ic_close" />
 
     <ScrollView
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/result_tv_title"
@@ -74,46 +75,46 @@
             android:orientation="vertical"
             android:animateLayoutChanges="true">
 
-            <!--약품 상세 설명 EXPAND 컨테이너 -->
-
+            <!--약품 번역 EXPAND 컨테이너 -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/result_container_translate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_tv_background">
+                android:background="@drawable/border_result_expand_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
 
                     android:text="@string/result_medicine_translate"
                     android:textSize="20sp"
                     android:textStyle="bold"
 
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/result_view_medicineTranslateToggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="20dp"
+                    android:background="#00FFFFFF"
+                    android:src="@drawable/ic_toggle"
+
                     app:layout_constraintBottom_toBottomOf="parent"
 
-                    android:layout_marginEnd="20dp"
-
-                    android:background="#00FFFFFF"
-                    android:src="@drawable/ic_toggle" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
             <!--약품 번역 EXPAND 컨테이너 END-->
 
             <!-- 약품 번역 -->
@@ -122,16 +123,113 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
+                <!-- 한국 카드 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/border_layout_background"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="5dp"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/result_tv_korea"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_translate"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/result_tv_medicineNameKr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Tylenol"/>
+
+                </LinearLayout>
+                <!-- 한국 카드 END-->
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/ic_translate"/>
+
+                <!-- 외국 카드 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/border_layout_background"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="3dp"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:id="@+id/result_tv_countryName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="미국"/>
+
+                        <ImageView
+                            android:id="@+id/result_iv_countryFlag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_translate"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/result_tv_medicineNameForeign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Dayquil"/>
+
+                </LinearLayout>
+                <!-- 외국 카드 END-->
+
+
             </LinearLayout>
             <!-- 약품 번역 END-->
 
             <!--약품 상세 설명 EXPAND 컨테이너 -->
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/result_container_explain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_tv_background">
+                android:background="@drawable/border_result_expand_background">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -181,13 +279,14 @@
                     android:paddingBottom="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/border_bottom_background"
                     android:src="@drawable/dayquil"/>
 
                 <!-- 약품 제품명 제조사 형태 -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_tv_background">
+                    android:background="@drawable/border_bottom_background">
 
                     <TextView
                         android:id="@+id/result_lb_name"
@@ -269,7 +368,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_tv_background"
+                    android:background="@drawable/border_bottom_background"
                     android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -294,7 +393,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_tv_background"
+                    android:background="@drawable/border_bottom_background"
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
@@ -319,7 +418,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_tv_background"
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
@@ -349,7 +447,7 @@
                 android:id="@+id/result_container_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_tv_background">
+                android:background="@drawable/border_result_expand_background">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -390,7 +488,6 @@
                 android:id="@+id/medicine_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_tv_background"
                 android:orientation="vertical">
 
                 <TextView
@@ -412,7 +509,7 @@
                 android:id="@+id/result_container_similar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_tv_background">
+                android:background="@drawable/border_result_expand_background">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -453,7 +550,7 @@
                 android:id="@+id/similar_medicine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_tv_background"
+                android:background="@drawable/border_bottom_background"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView

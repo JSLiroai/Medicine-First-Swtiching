@@ -90,7 +90,7 @@
             android:id="@+id/main_layout_slide"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/border_tv_background"
+            android:background="@drawable/border_bottom_background"
 
             tools:context=".MainActivity">
 
@@ -143,10 +143,6 @@
                 android:src="@drawable/ic_search" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
 
 
         <androidx.recyclerview.widget.RecyclerView
