@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MedicineFirstSwitching</string>
+    <string name="result_medicine_explain">약품 상세 설명</string>
+    <string name="result_medicine_name">제품명</string>
+    <string name="result_medicine_company">제조사</string>
+    <string name="result_medicine_shape">형태</string>
+    <string name="result_medicine_ingredient">주요 성분</string>
+    <string name="result_medicine_effect">효능</string>
+    <string name="result_medicine_warning">주의사항</string>
+    <string name="result_medicine_review">약품 리뷰</string>
+    <string name="result_medicine_similar">비슷한 약품</string>
+    <string name="result_medicine_translate">약품 번역 결과</string>
 </resources>
