@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -34,6 +35,7 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager searchLayoutManager;
     private SearchAdapter searchAdapter;
 
+    private ArrayList<SearchItem> symptomDataList;
     private ArrayList<SearchItem> searchDataList;
     private ArrayList<RecentItem> recentDataList;
 
@@ -61,11 +63,15 @@ public class SearchActivity extends AppCompatActivity {
 
     private void createDataList() {
         recentDataList = readHistory();
-
+        symptomDataList = new ArrayList<SearchItem>();
         searchDataList = new ArrayList<SearchItem>();
-        searchDataList.add(new SearchItem("asd"));
-        searchDataList.add(new SearchItem("asde"));
-        searchDataList.add(new SearchItem("감기"));
+
+        symptomDataList.add(new SearchItem("감기약","증상"));
+        symptomDataList.add(new SearchItem("지사제","증상"));
+
+        searchDataList.add(new SearchItem("asde","지사제"));
+        searchDataList.add(new SearchItem("감기엔","감기약"));
+        searchDataList.add(new SearchItem("타이레놀","감기약"));
     }
 
     private void buildButtons() {
@@ -93,7 +99,7 @@ public class SearchActivity extends AppCompatActivity {
         searchRecyclerView = findViewById(R.id.search_recycler);
         searchRecyclerView.setHasFixedSize(true);
         searchLayoutManager = new LinearLayoutManager(this);
-        searchAdapter = new SearchAdapter(this, recentDataList, searchDataList);
+        searchAdapter = new SearchAdapter(this, recentDataList, symptomDataList, searchDataList);
 
         searchRecyclerView.setLayoutManager(searchLayoutManager);
         searchRecyclerView.setAdapter(searchAdapter);
@@ -129,11 +135,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void filter(String text) {
-        //TODO:증상추가
-        ArrayList<SearchItem> searchList = new ArrayList<>();
+        ArrayList<SearchItem> symList = new ArrayList<SearchItem>();
+        ArrayList<SearchItem> searchList = new ArrayList<SearchItem>();
         if(text.equals("")) {
             btnDelText.setVisibility(View.INVISIBLE);
-
             ((LinearLayoutManager) searchLayoutManager).setReverseLayout(true);
             ((LinearLayoutManager) searchLayoutManager).setStackFromEnd(true);
 
@@ -143,18 +148,36 @@ public class SearchActivity extends AppCompatActivity {
             btnDelText.setVisibility(View.VISIBLE);
 
             ArrayList<RecentItem> history = new ArrayList<RecentItem>();
-            searchAdapter.setHistory(history);
-
             ((LinearLayoutManager) searchLayoutManager).setReverseLayout(false);
             ((LinearLayoutManager) searchLayoutManager).setStackFromEnd(false);
 
-            for(SearchItem item : searchDataList) {
-                if(item.getItem().toLowerCase().contains(text.toLowerCase())) {
-                    searchList.add(item);
+            searchAdapter.setHistory(history);
+
+            SearchItem symptom = null;
+            for(SearchItem item : symptomDataList) {
+                if(item.getItem().equals(text)) symptom = item;
+            }
+
+            if(symptom != null) {
+                Log.v("Debug",symptom.getExplain());
+                String searchSym = symptom.getItem();
+
+                for(SearchItem item : searchDataList) {
+                    if(item.getExplain().equals(searchSym)) searchList.add(item);
+                }
+            }
+            else {
+                for(SearchItem item : symptomDataList) {
+                    if(item.getItem().toLowerCase().contains(text.toLowerCase())) symList.add(item);
+                }
+
+                for(SearchItem item : searchDataList) {
+                    if(item.getItem().toLowerCase().contains(text.toLowerCase())) searchList.add(item);
                 }
             }
         }
-        searchAdapter.filterList(searchList);
+
+        searchAdapter.filterList(symList, searchList);
     }
 
     private ArrayList<RecentItem> readHistory() {
@@ -234,6 +257,8 @@ public class SearchActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
             intent.putExtra("String-SearchedItem",target);
+            //intent.putExtra("String-Symptom","");
+            //intent.putExtra("String-Country","");
             startActivity(intent);
         }
     }

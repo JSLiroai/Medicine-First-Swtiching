@@ -25,7 +25,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/search_btn_loadItem"
+        app:layout_constraintEnd_toStartOf="@+id/search_text_explain"
         app:layout_constraintStart_toEndOf="@+id/search_image_sample2"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,4 +40,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_upload"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/search_text_explain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="증상예시"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/search_btn_loadItem"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,6 +48,7 @@
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:text="05.13."
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/search_btn_delItem"
         app:layout_constraintTop_toTopOf="parent" />
