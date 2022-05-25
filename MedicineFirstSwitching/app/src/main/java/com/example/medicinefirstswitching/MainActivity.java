@@ -13,9 +13,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
+import com.example.medicinefirstswitching.Map.MapsActivity;
 import com.example.medicinefirstswitching.RecyclerView.Item;
 import com.example.medicinefirstswitching.RecyclerView.MainAdapter;
 import com.example.medicinefirstswitching.Searching.SearchActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private ImageButton slideHomeBtn;
     private ImageButton slideSearchBtn;
+    private FloatingActionButton mapBtn;
 
     public ArrayList<Item> testList = new ArrayList<Item>() {{
         add(new Item("감기약","aaa.jpg"));
@@ -54,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
         slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.main_slideLayout_main);
         slideHomeBtn = findViewById(R.id.main_btn_slideHome);
         slideSearchBtn = findViewById(R.id.main_btn_slideSearch);
-        searchButton = (Button)findViewById(R.id.main_btn_search);
+        searchButton = (Button) findViewById(R.id.main_btn_search);
+        mapBtn = (FloatingActionButton) findViewById(R.id.main_fbn_location);
 
 
 
@@ -117,6 +121,15 @@ public class MainActivity extends AppCompatActivity {
             //패널의 상태가 변했을 때
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
 
+            }
+        });
+
+        //Map Button
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(intent);
             }
         });
 
