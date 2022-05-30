@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medicinefirstswitching.R;
 import com.example.medicinefirstswitching.ResultActivity;
+import com.example.medicinefirstswitching.Searching.SearchActivity;
 
 import java.util.ArrayList;
 
@@ -18,9 +20,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
 
     Context context;
     ArrayList<Item> list;
+    Spinner spinner;
 
-    public MainAdapter(Context context, ArrayList<Item> list) {
+
+    public MainAdapter(Context context, ArrayList<Item> list, Spinner spinner) {
         super();
+        this.spinner = spinner;
         this.context = context;
         this.list = list;
     }
@@ -33,9 +38,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
             holder.button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, ResultActivity.class);
+                    Intent intent = new Intent(context, SearchActivity.class);
+                    intent.putExtra("symptom", holder.button.getText());
+                    intent.putExtra("country", (String)spinner.getSelectedItem());
                     context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-
 
                 }
             });

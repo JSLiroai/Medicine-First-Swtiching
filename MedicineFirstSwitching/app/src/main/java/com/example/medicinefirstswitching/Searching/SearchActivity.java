@@ -48,8 +48,19 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        
+        //카테고리 버튼 클릭 시
+        Intent intent = getIntent();
+        String symptom = intent.getStringExtra("symptom");
+        String country = intent.getStringExtra("country");
 
         editText = findViewById(R.id.search_edit_searchText);
+        editText.setText(symptom);
+
+        Log.d("[SYMPTOM]", symptom);
+        Log.d("[COUNTRY]", country);
+
+
         searchBtn = findViewById(R.id.search_btn_seearch);
         btnDelText = findViewById(R.id.search_btn_delText);
         btnBack = findViewById(R.id.search_btn_back);

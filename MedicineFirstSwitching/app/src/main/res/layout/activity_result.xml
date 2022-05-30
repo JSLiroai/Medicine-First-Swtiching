@@ -146,12 +146,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:layout_marginEnd="10dp"
                             android:text="@string/result_tv_korea"/>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_translate"/>
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/korea"
+                            app:civ_border_width="1dp"
+                            app:civ_border_color="@color/gray"/>
 
                     </LinearLayout>
 
@@ -198,13 +201,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:layout_marginEnd="10dp"
                             android:text="미국"/>
 
-                        <ImageView
+                        <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/result_iv_countryFlag"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_translate"/>
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/unitedstates"
+                            app:civ_border_width="1dp"
+                            app:civ_border_color="@color/gray"/>
 
                     </LinearLayout>
 

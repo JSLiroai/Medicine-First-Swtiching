@@ -55,7 +55,6 @@
             app:layout_constraintStart_toEndOf="@id/main_tv_travel"
             app:layout_constraintBottom_toBottomOf="@id/main_tv_travel"
             app:layout_constraintTop_toTopOf="@id/main_tv_travel"
-
             android:layout_marginLeft="10dp"
 
             android:entries="@array/country" />
@@ -94,22 +93,22 @@
 
             tools:context=".MainActivity">
 
-            <ImageButton
-                android:id="@+id/main_btn_slideHome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/main_btn_slideCountryImage"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
 
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
 
                 android:alpha="0"
-                android:paddingLeft="20dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
+                android:layout_marginStart="20dp"
                 android:outlineProvider="none"
                 android:gravity="center"
-                android:background="#00FFFFFF"
-                android:src="@drawable/ic_home" />
+                android:src="@drawable/unitedstates"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/gray"/>
 
             <TextView
                 android:id="@+id/main_tv_slideTitle"
@@ -117,7 +116,7 @@
                 android:layout_height="0dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/main_btn_slideHome"
+                app:layout_constraintStart_toEndOf="@+id/main_btn_slideCountryImage"
                 app:layout_constraintEnd_toStartOf="@+id/main_btn_slideSearch"
                 android:background="#00FFFFFF"
                 android:text="category"
