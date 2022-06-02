@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.loader.content.AsyncTaskLoader;
 
 import android.content.DialogInterface;
 import android.location.Location;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -41,7 +43,17 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -51,7 +63,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final String MAPS_API_KEY = "AIzaSyB6y2LYcOW1m44uiEGWSWOB5xKtA3xyALw";
     private GoogleMap mMap;
     private CameraPosition cameraPosition;
-    private Button btnGPS;
 
     //default location (Sydney)
     private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
@@ -87,18 +98,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        btnGPS = (Button) findViewById(R.id.map_gps);
-        btnGPS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showCurrentPlace();
-            }
-        });
-
-        Places.initialize(getApplicationContext(), MAPS_API_KEY);
+        Places.initialize(getApplicationContext(), getResources().getString(R.string.map_api_key));
         placesClient = Places.createClient(this);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        Log.e("dd","");
     }
 
     @Override
@@ -180,10 +184,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             String[] permissions = {android.Manifest.permission.CAMERA, android.Manifest.permission.ACCESS_FINE_LOCATION};
 
             ActivityCompat.requestPermissions(this, permissions, permissionsCode);
-            /*
-            ActivityCompat.requestPermissions(this,
-                    new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);*/
         }
     }
 
@@ -221,6 +221,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lastKnownLocation.getLatitude(),
                                                 lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                showCurrentPlace();
                             }
                         }
                         else {
@@ -243,55 +244,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         if(locationPermissionGranted) {
-            List<Place.Field> placeFields = Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS,
-                    Place.Field.LAT_LNG);
-
-            FindCurrentPlaceRequest request = FindCurrentPlaceRequest.newInstance(placeFields);
-
-            //TODO : change here to shiw pharmacy
-            @SuppressWarnings("MissingPermission") final
-            Task<FindCurrentPlaceResponse> placeResult = placesClient.findCurrentPlace(request);
-            placeResult.addOnCompleteListener(new OnCompleteListener<FindCurrentPlaceResponse>() {
-                @Override
-                public void onComplete(@NonNull Task<FindCurrentPlaceResponse> task) {
-                    if(task.isSuccessful() && task.getResult() != null) {
-                        FindCurrentPlaceResponse likelyPlaces = task.getResult();
-
-                        //set count
-                        int count;
-                        if(likelyPlaces.getPlaceLikelihoods().size() < M_MAX_ENTRIES) {
-                            count = likelyPlaces.getPlaceLikelihoods().size();
-                        }
-                        else {
-                            count = M_MAX_ENTRIES;
-                        }
-
-                        int i = 0;
-                        likelyPlaceNames = new String[count];
-                        likelyPlaceAddresses = new String[count];
-                        likelyPlaceAttributions = new List[count];
-                        likelyPlaceLatLngs = new LatLng[count];
-
-                        for (PlaceLikelihood placeLikelihood : likelyPlaces.getPlaceLikelihoods()) {
-                            // Build a list of likely places to show the user.
-                            likelyPlaceNames[i] = placeLikelihood.getPlace().getName();
-                            likelyPlaceAddresses[i] = placeLikelihood.getPlace().getAddress();
-                            likelyPlaceAttributions[i] = placeLikelihood.getPlace()
-                                    .getAttributions();
-                            likelyPlaceLatLngs[i] = placeLikelihood.getPlace().getLatLng();
-
-                            i++;
-                            if (i > (count - 1)) {
-                                break;
-                            }
-                        }
-                        MapsActivity.this.openPlacesDialog();
-                    }
-                    else {
-                        Log.e("debug","Exception: %s", task.getException());
-                    }
-                }
-            });
+            String  url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+                    + "?location=" + lastKnownLocation.getLatitude() + "," + lastKnownLocation.getLongitude()
+                    + "&radius=5000" + "&types=" + "pharmacy" + "&sensor=ture"
+                    + "&key=" + getResources().getString(R.string.map_api_key);
+            Log.v("dd",url);
+            new PlaceTask().execute(url);
         }
         else {
             Log.i("debug", "The user did not grant location permission.");
@@ -304,7 +262,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             getLocationPermission();
         }
     }
-
+    //TODO:change select dialog
     private void openPlacesDialog() {
         // Ask the user to choose the place where they are now.
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
@@ -337,5 +295,77 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .show();
     }
 
+    private class PlaceTask extends AsyncTask<String, Integer,String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            String data = null;
+            try {
+                data = downloadUrl(strings[0]);
+                Log.v("debug", "data : " + data);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            return data;
+        }
 
+        @Override
+        protected void onPostExecute(String s) {
+            new ParserTask().execute(s);
+        }
+    }
+
+    private String downloadUrl(String string) throws IOException {
+        URL url = new URL(string);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.connect();
+        InputStream stream = connection.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        StringBuilder builder = new StringBuilder();
+        String line = "";
+
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+        }
+
+        String data = builder.toString();
+        reader.close();;
+
+        return  data;
+    }
+
+    private class ParserTask extends AsyncTask<String,Integer,List<HashMap<String,String>>>{
+        @Override
+        protected List<HashMap<String, String>> doInBackground(String... strings) {
+            JsonParser jsonParser = new JsonParser();
+            List<HashMap<String,String>> mapList = null;
+            JSONObject object = null;
+            try {
+                object = new JSONObject(strings[0]);
+                mapList = jsonParser.parseResult(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return mapList;
+        }
+
+        @Override
+        protected void onPostExecute(List<HashMap<String,String>> hashMaps) {
+            mMap.clear();
+            for(int i=0; i<hashMaps.size();i++) {
+                HashMap<String,String> hashMapList = hashMaps.get(i);
+
+                double lat = Double.parseDouble(hashMapList.get("lat"));
+                double lng = Double.parseDouble(hashMapList.get("lng"));
+                String name = hashMapList.get("name");
+
+                LatLng latLng = new LatLng(lat,lng);
+                MarkerOptions options =new MarkerOptions();
+                options.position(latLng);
+                options.title(name);
+
+                mMap.addMarker(options);
+            }
+        }
+    }
 }
