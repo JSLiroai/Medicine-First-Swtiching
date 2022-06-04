@@ -281,6 +281,7 @@
                 android:orientation="vertical">
                 <!-- 약품 이미지 -->
                 <ImageView
+                    android:id="@+id/result_iv_medicineImage"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:layout_width="match_parent"
@@ -328,43 +329,43 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:layout_toEndOf="@+id/result_lb_name"
-
-                        android:layout_marginTop="20dp"
                         android:layout_marginStart="40dp"
 
-                        android:textColor="#8F8F8F"
+                        android:layout_marginTop="20dp"
+                        android:layout_toEndOf="@+id/result_lb_name"
 
-                        android:text="DayQuil Cold and Flu"/>
+                        android:text="DayQuil Cold and Flu"
+
+                        android:textColor="#8F8F8F" />
 
                     <TextView
                         android:id="@+id/result_tv_company"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:layout_marginTop="20dp"
+                        android:layout_below="@+id/result_tv_name"
                         android:layout_marginStart="40dp"
 
+                        android:layout_marginTop="20dp"
                         android:layout_toEndOf="@id/result_lb_name"
-                        android:layout_below="@+id/result_tv_name"
 
-                        android:textColor="#8F8F8F"
+                        android:text="Vicks"
 
-                        android:text="Vicks" />
+                        android:textColor="#8F8F8F" />
 
                     <TextView
                         android:id="@+id/result_tv_form"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:layout_toEndOf="@id/result_lb_name"
                         android:layout_below="@+id/result_tv_company"
-
-                        android:layout_marginTop="20dp"
                         android:layout_marginStart="40dp"
 
-                        android:textColor="#8F8F8F"
-                        android:text="알약" />
+                        android:layout_marginTop="20dp"
+                        android:layout_toEndOf="@id/result_lb_name"
+
+                        android:text="알약"
+                        android:textColor="#8F8F8F" />
 
                 </RelativeLayout>
 
