@@ -35,10 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView slideCountryImage;
     private ImageButton slideSearchBtn;
     private FloatingActionButton mapBtn;
-
-    //Intent 넘길 값
-    String symptom = "";
-    String country = "United States";
+    static final int [] countryFlagIds = {R.drawable.unitedstates, R.drawable.china, R.drawable.england, R.drawable.france, R.drawable.germany, R.drawable.india,
+            R.drawable.italy, R.drawable.japan, R.drawable.mexico, R.drawable.netherlands, R.drawable.russia};
 
     public ArrayList<Item> testList = new ArrayList<Item>() {{
         add(new Item("감기약","aaa.jpg"));
@@ -50,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
         add(new Item("관절염","aaa.jpg"));
         add(new Item("가스릴리프","aaa.jpg"));
     }};
+
+    //Intent 넘길 값
+    String symptom = "";
+    String country = "United States";
+    int countryFlagId = countryFlagIds[0];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
         slideSearchBtn = findViewById(R.id.main_btn_slideSearch);
         searchButton = (Button) findViewById(R.id.main_btn_search);
         mapBtn = (FloatingActionButton) findViewById(R.id.main_fbn_location);
-        int [] countryFlagId = {R.drawable.unitedstates, R.drawable.china, R.drawable.england, R.drawable.france, R.drawable.germany, R.drawable.india,
-                R.drawable.italy, R.drawable.japan, R.drawable.mexico, R.drawable.netherlands, R.drawable.russia};
 
 
         //SEARCH BUTTON
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 intent.putExtra("symptom", symptom);
                 intent.putExtra("country", country);
+                intent.putExtra("countryFlagId", countryFlagId);
                 startActivity(intent);
             }
         });
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 intent.putExtra("symptom", symptom);
                 intent.putExtra("country", country);
+                intent.putExtra("countryFlagId", countryFlagId);
                 startActivity(intent);
             }
         });
@@ -98,8 +102,15 @@ public class MainActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //슬라이딩패널 국기 이미지 변경
+                slideCountryImage.setImageResource(countryFlagIds[i]);
+                //intent 전달될 값 변경
                 country = (String)adapterView.getItemAtPosition(i);
-                slideCountryImage.setImageResource(countryFlagId[i]);
+                countryFlagId = countryFlagIds[i];
+                //adapter(SlidingPanel)에 값 전달
+                adapter.setCountry(country);
+                adapter.setCountryFlagId(countryFlagId);
+
 
             }
 
@@ -138,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //RECYCLERVIEW
-        adapter = new MainAdapter(getApplicationContext(), testList, spinner);
+        adapter = new MainAdapter(getApplicationContext(), testList);
         layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,8 @@ import com.example.medicinefirstswitching.Searching.SearchActivity;
 import com.google.common.io.LineReader;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -43,6 +46,21 @@ public class ResultActivity extends AppCompatActivity {
     private ImageView toggleSimilar;
 
 
+    //입력될 값
+    private TextView titleMedicineName;
+    private CircleImageView countryFlag;
+    private TextView countryName;
+    private TextView koreanMedicineName;
+    private TextView foreignMedicineName;
+    private ImageView medicineImage;
+    private TextView medicineName;
+    private TextView medicineCompany;
+    private TextView medicineForm;
+    private TextView medicineIngredient;
+    private TextView medicineEffectiveness;
+    private TextView medicineWarning;
+
+
     //TEST ARRAY
     public ArrayList<Item> testList = new ArrayList<Item>() {{
         add(new Item("Tylenol","aaa.jpg"));
@@ -63,6 +81,8 @@ public class ResultActivity extends AppCompatActivity {
         expandSimilarMedicine.setOnClickListener(new ExpandContainerListener(similarMedicine, toggleSimilar));
         expandMedicineReview.setOnClickListener(new ExpandContainerListener(medicineReview, toggleReview));
         expandMedicineTranslate.setOnClickListener(new ExpandContainerListener(medicineTranslate, toggleTranslate));
+
+
 
         //CLOSE BUTTON
         closeButton.setOnClickListener(new View.OnClickListener(){
@@ -113,6 +133,22 @@ public class ResultActivity extends AppCompatActivity {
         toggleReview = findViewById(R.id.result_view_reviewToggle);
         toggleSimilar = findViewById(R.id.result_view_similarMedicineToggle);
         toggleTranslate = findViewById(R.id.result_view_medicineTranslateToggle);
+
+        TextView titleMedicineName = findViewById(R.id.result_tv_title);
+        CircleImageView countryFlag = findViewById(R.id.result_iv_countryFlag);
+        TextView countryName = findViewById(R.id.result_tv_countryName);
+        TextView koreanMedicineName = findViewById(R.id.result_tv_medicineNameKr);
+        TextView foreignMedicineName = findViewById(R.id.result_tv_medicineNameForeign);
+        ImageView medicineImage = findViewById(R.id.result_iv_medicineImage);
+        TextView medicineName = findViewById(R.id.result_tv_name);
+        TextView medicineCompany = findViewById(R.id.result_tv_company);
+        TextView medicineForm = findViewById(R.id.result_tv_form);
+        TextView medicineIngredient = findViewById(R.id.result_tv_ingredient);
+        TextView medicineEffectiveness = findViewById(R.id.result_tv_effectiveness);
+        TextView medicineWarning = findViewById(R.id.result_tv_warning);
+
+        //intent 값 받아오기
+        Intent intent = getIntent();
 
     }
 

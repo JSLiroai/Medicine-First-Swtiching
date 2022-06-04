@@ -53,12 +53,14 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String symptom = intent.getStringExtra("symptom");
         String country = intent.getStringExtra("country");
+        int countryFlagId = intent.getIntExtra("countryFlagId", R.drawable.unitedstates);
 
         editText = findViewById(R.id.search_edit_searchText);
         editText.setText(symptom);
 
         Log.d("[SYMPTOM]", symptom);
         Log.d("[COUNTRY]", country);
+        Log.d("[COUNTRYFLAGID]", countryFlagId+"");
 
 
         searchBtn = findViewById(R.id.search_btn_seearch);
