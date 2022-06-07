@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.medicinefirstswitching.DBConnection;
 import com.example.medicinefirstswitching.R;
 import com.example.medicinefirstswitching.ResultActivity;
 import com.google.gson.Gson;
@@ -27,6 +28,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class SearchActivity extends AppCompatActivity {
     private static final String SEARCH_HISTORY = "search_history";
@@ -35,9 +37,11 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager searchLayoutManager;
     private SearchAdapter searchAdapter;
 
+    private DBConnection db;
     private ArrayList<SearchItem> symptomDataList;
     private ArrayList<SearchItem> searchDataList;
     private ArrayList<RecentItem> recentDataList;
+    private String tCountry = "Korea";
 
     private ImageButton searchBtn;
     private EditText editText;
@@ -47,19 +51,20 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DBConnection("Korea", SearchActivity.this);
         setContentView(R.layout.activity_search);
         
         //카테고리 버튼 클릭 시
         Intent intent = getIntent();
         String symptom = intent.getStringExtra("symptom");
-        String country = intent.getStringExtra("country");
+        tCountry = intent.getStringExtra("country");
         int countryFlagId = intent.getIntExtra("countryFlagId", R.drawable.unitedstates);
 
         editText = findViewById(R.id.search_edit_searchText);
         editText.setText(symptom);
 
         Log.d("[SYMPTOM]", symptom);
-        Log.d("[COUNTRY]", country);
+        Log.d("[COUNTRY]", tCountry);
         Log.d("[COUNTRYFLAGID]", countryFlagId+"");
 
 
@@ -79,12 +84,26 @@ public class SearchActivity extends AppCompatActivity {
         symptomDataList = new ArrayList<SearchItem>();
         searchDataList = new ArrayList<SearchItem>();
 
-        symptomDataList.add(new SearchItem("감기약","증상"));
-        symptomDataList.add(new SearchItem("지사제","증상"));
+        symptomDataList.add(new SearchItem("painkiller","증상"));
+        symptomDataList.add(new SearchItem("cold medicine","증상"));
+        symptomDataList.add(new SearchItem("heartburn","증상"));
+        symptomDataList.add(new SearchItem("laxative","증상"));
+        symptomDataList.add(new SearchItem("antidiarrheal","증상"));
+        symptomDataList.add(new SearchItem("hemorrhoid","증상"));
 
-        searchDataList.add(new SearchItem("asde","지사제"));
-        searchDataList.add(new SearchItem("감기엔","감기약"));
-        searchDataList.add(new SearchItem("타이레놀","감기약"));
+        ArrayList<HashMap<String, String>> dbList = db.getmArrayList();
+
+        for(HashMap<String, String> item : dbList) {
+            searchDataList.add(new SearchItem(item.get("product"), item.get("category1")));
+        }
+    }
+
+    public void updateData(ArrayList<HashMap<String, String>> dbList){
+        searchDataList.clear();
+        for(HashMap<String, String> item : dbList) {
+            searchDataList.add(new SearchItem(item.get("product"), item.get("category1")));
+        }
+        filter(editText.getText().toString());
     }
 
     private void buildButtons() {
@@ -269,9 +288,9 @@ public class SearchActivity extends AppCompatActivity {
             addHistoryData(target);
 
             Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
-            intent.putExtra("String-SearchedItem",target);
-            //intent.putExtra("String-Symptom","");
-            //intent.putExtra("String-Country","");
+            intent.putExtra("String-SearchedItem",checkTarget.getItem());
+            intent.putExtra("String-Symptom",checkTarget.getExplain());
+            intent.putExtra("String-Country",tCountry);
             startActivity(intent);
         }
     }
