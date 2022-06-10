@@ -22,10 +22,15 @@ import java.util.HashMap;
 
 public class DBConnection {
     private static final String TAG_JSON = "webnautes";
-    private static final String TAG_NATION = "nation";
-    private static final String TAG_PRODUCT = "product";
-    private static final String TAG_CATEGORY1 = "category1";
-    private static final String TAG_CATEGORY2 = "category2";
+    private static final String TAG_NATION = "Nation";
+    private static final String TAG_PRODUCT = "Product";
+    private static final String TAG_CATEGORY = "Category";
+    private static final String TAG_COMPANY = "Company";
+    private static final String TAG_FORM = "Form";
+    private static final String TAG_INGREDIENT = "Ingredient";
+    private static final String TAG_EFFECTIVENESS = "Effectiveness";
+    private static final String TAG_WARNING = "Warning";
+
 
     AppCompatActivity context;
 
@@ -36,7 +41,8 @@ public class DBConnection {
         this.context = context;
         mArrayList = new ArrayList<>();
         GetData task = new GetData();
-        task.execute("http://61.102.138.116/getData.php" + "?nation=\"" + country + "\"&category1=\"" + symptom + "\"");
+        task.execute("http://61.102.138.116/getData.php" + "?Nation=\"" + country + "\"&Category=\"" + symptom + "\"");
+
     }
 
     public DBConnection(String country, AppCompatActivity context) {
@@ -108,14 +114,22 @@ public class DBConnection {
                 JSONObject item = jsonArray.getJSONObject(i);
                 String nation = item.getString(TAG_NATION);
                 String product = item.getString(TAG_PRODUCT);
-                String category1 = item.getString(TAG_CATEGORY1);
-                String category2 = item.getString(TAG_CATEGORY2);
+                String category = item.getString(TAG_CATEGORY);
+                String company = item.getString(TAG_COMPANY);
+                String form = item.getString(TAG_FORM);
+                String ingredient = item.getString(TAG_INGREDIENT);
+                String effectiveness = item.getString(TAG_EFFECTIVENESS);
+                String warning = item.getString(TAG_WARNING);
 
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put(TAG_NATION, nation);
                 hashMap.put(TAG_PRODUCT, product);
-                hashMap.put(TAG_CATEGORY1, category1);
-                hashMap.put(TAG_CATEGORY2, category2);
+                hashMap.put(TAG_CATEGORY, category);
+                hashMap.put(TAG_COMPANY, company);
+                hashMap.put(TAG_FORM, form);
+                hashMap.put(TAG_INGREDIENT, ingredient);
+                hashMap.put(TAG_EFFECTIVENESS, effectiveness);
+                hashMap.put(TAG_WARNING, warning);
 
                 mArrayList.add(hashMap);
                 if(context instanceof SearchActivity) ((SearchActivity) this.context).updateData(mArrayList);
