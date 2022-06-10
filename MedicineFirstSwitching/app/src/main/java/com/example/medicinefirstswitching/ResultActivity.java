@@ -2,6 +2,7 @@ package com.example.medicinefirstswitching;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -12,12 +13,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.medicinefirstswitching.DBConnection;
+import com.example.medicinefirstswitching.MainActivity;
+import com.example.medicinefirstswitching.R;
 import com.example.medicinefirstswitching.RecyclerView.Item;
 import com.example.medicinefirstswitching.RecyclerView.ResultAdapter;
 import com.example.medicinefirstswitching.Searching.SearchActivity;
-import com.google.common.io.LineReader;
+import com.example.medicinefirstswitching.Searching.SearchItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -61,6 +66,18 @@ public class ResultActivity extends AppCompatActivity {
     private TextView medicineWarning;
 
 
+    //Intent 가져올 값
+    String koreanMedicine;
+    String country;
+    String symptom;
+    int countryFlagId;
+
+    //DataList
+    private ArrayList<ResultItem> resultDataList;
+
+    //DB
+    private DBConnection db;
+
     //TEST ARRAY
     public ArrayList<Item> testList = new ArrayList<Item>() {{
         add(new Item("Tylenol","aaa.jpg"));
@@ -75,6 +92,18 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         init();
+
+        Intent intent = getIntent();
+        koreanMedicine = intent.getStringExtra("String-SearchedItem");
+        symptom = intent.getStringExtra("String-Symptom");
+        country = intent.getStringExtra("String-Country");
+        countryFlagId = intent.getIntExtra("Int-CountryFlagId", R.drawable.unitedstates);
+
+        db = new DBConnection(country,symptom, ResultActivity.this);
+
+        Log.d("[SYMPTOM]", symptom);
+        Log.d("[COUNTRY]", country);
+        Log.d("[COUNTRYFLAGID]", countryFlagId+"");
 
         //EXPAND MEDICINE EXPLAIN
         expandMedicineExplain.setOnClickListener(new ExpandContainerListener(medicineExplain, toggleExplain));
@@ -134,22 +163,70 @@ public class ResultActivity extends AppCompatActivity {
         toggleSimilar = findViewById(R.id.result_view_similarMedicineToggle);
         toggleTranslate = findViewById(R.id.result_view_medicineTranslateToggle);
 
-        TextView titleMedicineName = findViewById(R.id.result_tv_title);
-        CircleImageView countryFlag = findViewById(R.id.result_iv_countryFlag);
-        TextView countryName = findViewById(R.id.result_tv_countryName);
-        TextView koreanMedicineName = findViewById(R.id.result_tv_medicineNameKr);
-        TextView foreignMedicineName = findViewById(R.id.result_tv_medicineNameForeign);
-        ImageView medicineImage = findViewById(R.id.result_iv_medicineImage);
-        TextView medicineName = findViewById(R.id.result_tv_name);
-        TextView medicineCompany = findViewById(R.id.result_tv_company);
-        TextView medicineForm = findViewById(R.id.result_tv_form);
-        TextView medicineIngredient = findViewById(R.id.result_tv_ingredient);
-        TextView medicineEffectiveness = findViewById(R.id.result_tv_effectiveness);
-        TextView medicineWarning = findViewById(R.id.result_tv_warning);
+        titleMedicineName = findViewById(R.id.result_tv_title);
+        countryFlag = findViewById(R.id.result_iv_countryFlag);
+        countryName = findViewById(R.id.result_tv_countryName);
+        koreanMedicineName = findViewById(R.id.result_tv_medicineNameKr);
+        foreignMedicineName = findViewById(R.id.result_tv_medicineNameForeign);
+        medicineImage = findViewById(R.id.result_iv_medicineImage);
+        medicineName = findViewById(R.id.result_tv_name);
+        medicineCompany = findViewById(R.id.result_tv_company);
+        medicineForm = findViewById(R.id.result_tv_form);
+        medicineIngredient = findViewById(R.id.result_tv_ingredient);
+        medicineEffectiveness = findViewById(R.id.result_tv_effectiveness);
+        medicineWarning = findViewById(R.id.result_tv_warning);
+    }
+    private void createDataList() {
+        resultDataList = new ArrayList<ResultItem>();
+        ArrayList<HashMap<String, String>> dbList = db.getmArrayList();
 
-        //intent 값 받아오기
-        Intent intent = getIntent();
+        for(HashMap<String, String> item : dbList) {
+            ResultItem data = new ResultItem(item.get("Product"), item.get("Company"), item.get("Form"),item.get("Ingredient"), item.get("Effectiveness"),item.get("Warning"));
+            resultDataList.add(data);
+            Log.d("[DATA INSERT]", data.toString());
+        }
+    }
 
+    public void updateData(ArrayList<HashMap<String, String>> dbList){
+        resultDataList.clear();
+        for(HashMap<String, String> item : dbList) {
+            ResultItem data = new ResultItem(item.get("Product"), item.get("Company"), item.get("Form"),item.get("Ingredient"), item.get("Effectiveness"),item.get("Warning"));
+            resultDataList.add(data);
+            Log.d("[DATA INSERT]", data.toString());
+        }
+    }
+
+
+    public void setData(){
+        ResultItem settingItem = resultDataList.get(0);
+
+        //약 이름 제목 설정
+        titleMedicineName.setText(settingItem.getProduct());
+
+        //약품 번역 창 설정
+        koreanMedicineName.setText(koreanMedicine);
+        countryName.setText(country);
+        countryFlag.setImageResource(countryFlagId);
+        foreignMedicineName.setText(settingItem.getProduct());
+
+        //약품 이미지 설정
+        String imageURL = "https://mfs-bucket.s3.ap-northeast-2.amazonaws.com/" + settingItem.getProduct() + "jpg";
+
+        //Picasso.get().load(imageURL).into(medicineImage);
+
+        //약품 설명 설정
+        medicineName.setText(settingItem.getProduct());
+        medicineCompany.setText(settingItem.getCompany());
+        medicineForm.setText(settingItem.getForm());
+
+        //약품 주요 성분 설정
+        medicineIngredient.setText(settingItem.getIngredient());
+
+        //약품 주요 효능
+        medicineEffectiveness.setText(settingItem.getEffectiveness());
+
+        //약품 주의사항
+        medicineWarning.setText(settingItem.getWarning());
     }
 
     //EXPAND 시 발생하는 이벤트 리스너
