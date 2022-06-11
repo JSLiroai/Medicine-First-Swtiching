@@ -1,5 +1,9 @@
 package com.example.medicinefirstswitching.Map;
 
+import static com.google.android.libraries.places.api.model.Place.BusinessStatus.OPERATIONAL;
+
+import com.google.android.libraries.places.api.model.Place;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class JsonParser {
+    public static final String OPEN = "OPERATIONAL";
+
     private HashMap<String,String> parseJsonObject(JSONObject object) {
         HashMap<String,String> dataList = new HashMap<>();
         try {
@@ -20,6 +26,25 @@ public class JsonParser {
             dataList.put("name",name);
             dataList.put("lat",latitude);
             dataList.put("lng",longitude);
+            try {
+                String type = object.getJSONArray("types").optString(0);
+                dataList.put("type", type);
+            } catch (JSONException e) {
+                dataList.put("type", "");
+            }
+            try {
+                String address = object.getJSONObject("plus_code").getString("compound_code");
+                dataList.put("address", address);
+            } catch (JSONException e) {
+                dataList.put("address", "");
+            }
+            try {
+                String status = object.getString("business_status") == OPEN ? "영업 중": "영업 종료";
+                dataList.put("status", status);
+            } catch (JSONException e) {
+                dataList.put("status", "");
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -31,6 +56,7 @@ public class JsonParser {
         for(int i = 0; i < jsonArray.length(); i++) {
             try {
                 HashMap<String,String> data = parseJsonObject((JSONObject) jsonArray.get(i));
+                data.put("tag", "tag" + i);
                 dataList.add(data);
             } catch (JSONException e) {
                 e.printStackTrace();

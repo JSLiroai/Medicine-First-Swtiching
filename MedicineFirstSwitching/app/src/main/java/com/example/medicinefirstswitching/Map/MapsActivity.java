@@ -3,6 +3,7 @@ package com.example.medicinefirstswitching.Map;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -16,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -63,6 +65,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final String MAPS_API_KEY = "AIzaSyB6y2LYcOW1m44uiEGWSWOB5xKtA3xyALw";
     private GoogleMap mMap;
     private CameraPosition cameraPosition;
+    private List<HashMap<String,String>> placeList;
 
     //default location (Sydney)
     private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
@@ -74,6 +77,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private Location lastKnownLocation;
 
+    private ConstraintLayout mapInfoRoot;
+    private LayoutInflater minflater;
+    private ConstraintLayout mapinfoCard;
+
+    @Override
+    public void onBackPressed() {
+        if(mapInfoRoot.getVisibility() == View.VISIBLE) {
+            mapInfoRoot.setVisibility(View.INVISIBLE);
+        }
+        else super.onBackPressed();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +99,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         setContentView(R.layout.activity_maps);
+        mapInfoRoot = findViewById(R.id.map_info_root);
+        minflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        minflater.inflate(R.layout.map_info_card, mapInfoRoot,true);
+        mapInfoRoot.setVisibility(View.INVISIBLE);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -91,7 +110,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Places.initialize(getApplicationContext(), getResources().getString(R.string.map_api_key));
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        Log.e("dd","");
     }
 
     @Override
@@ -134,9 +152,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
-
-
-                return false;
+                showInfo(marker);
+                return true;
             }
         });
     }
@@ -260,6 +277,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private void showInfo(Marker marker) {
+        for(HashMap<String, String> item : placeList) {
+            if(marker.getTag().equals(item.get("tag"))) {
+                ((TextView) findViewById(R.id.map_place_name)).setText(item.get("name"));
+                ((TextView) findViewById(R.id.map_place_type)).setText(item.get("type"));
+                ((TextView) findViewById(R.id.map_place_address)).setText(item.get("address"));
+                ((TextView) findViewById(R.id.map_place_status)).setText(item.get("status"));
+            }
+        }
+
+        mapInfoRoot.setVisibility(View.VISIBLE);
+    }
+
     private class PlaceTask extends AsyncTask<String, Integer,String> {
         @Override
         protected String doInBackground(String... strings) {
@@ -317,6 +347,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         protected void onPostExecute(List<HashMap<String,String>> hashMaps) {
             mMap.clear();
+            placeList = hashMaps;
+
             for(int i=0; i<hashMaps.size();i++) {
                 HashMap<String,String> hashMapList = hashMaps.get(i);
 
@@ -329,8 +361,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 options.position(latLng);
                 options.title(name);
 
-
-                mMap.addMarker(options);
+                mMap.addMarker(options).setTag("tag" + i);
             }
         }
     }
