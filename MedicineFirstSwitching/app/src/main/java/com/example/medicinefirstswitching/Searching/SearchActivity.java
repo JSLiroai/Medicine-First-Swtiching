@@ -262,7 +262,6 @@ public class SearchActivity extends AppCompatActivity {
         searchAdapter.setHistory(recentDataList);
         saveHistory();
     }
-    //TODO:전체삭제추가
     private void resetHistory() {
         recentDataList.clear();
         searchAdapter.setHistory(recentDataList);
