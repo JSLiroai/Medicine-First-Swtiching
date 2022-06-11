@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -84,6 +86,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onBackPressed() {
         if(mapInfoRoot.getVisibility() == View.VISIBLE) {
+            mapInfoRoot.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_down));
             mapInfoRoot.setVisibility(View.INVISIBLE);
         }
         else super.onBackPressed();
@@ -152,6 +155,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                        marker.getPosition(), DEFAULT_ZOOM));
                 showInfo(marker);
                 return true;
             }
@@ -286,7 +291,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 ((TextView) findViewById(R.id.map_place_status)).setText(item.get("status"));
             }
         }
-
+        mapInfoRoot.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_up));
         mapInfoRoot.setVisibility(View.VISIBLE);
     }
 
