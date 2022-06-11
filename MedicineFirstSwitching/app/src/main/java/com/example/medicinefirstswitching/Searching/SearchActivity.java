@@ -41,7 +41,7 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<SearchItem> symptomDataList;
     private ArrayList<SearchItem> searchDataList;
     private ArrayList<RecentItem> recentDataList;
-    private String tCountry = "Korea";
+    private String tCountry = "대한민국";
 
     private ImageButton searchBtn;
     private EditText editText;
@@ -51,7 +51,7 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new DBConnection("Korea", SearchActivity.this);
+        db = new DBConnection("대한민국", SearchActivity.this);
         setContentView(R.layout.activity_search);
         
         //카테고리 버튼 클릭 시
@@ -85,7 +85,7 @@ public class SearchActivity extends AppCompatActivity {
         searchDataList = new ArrayList<SearchItem>();
 
         symptomDataList.add(new SearchItem("painkiller","증상"));
-        symptomDataList.add(new SearchItem("cold medicine","증상"));
+        symptomDataList.add(new SearchItem("감기약","증상"));
         symptomDataList.add(new SearchItem("heartburn","증상"));
         symptomDataList.add(new SearchItem("laxative","증상"));
         symptomDataList.add(new SearchItem("antidiarrheal","증상"));
@@ -94,14 +94,15 @@ public class SearchActivity extends AppCompatActivity {
         ArrayList<HashMap<String, String>> dbList = db.getmArrayList();
 
         for(HashMap<String, String> item : dbList) {
-            searchDataList.add(new SearchItem(item.get("product"), item.get("category1")));
+            searchDataList.add(new SearchItem(item.get("Product"), item.get("Category")));
         }
     }
 
     public void updateData(ArrayList<HashMap<String, String>> dbList){
         searchDataList.clear();
         for(HashMap<String, String> item : dbList) {
-            searchDataList.add(new SearchItem(item.get("product"), item.get("category1")));
+            Log.d("", item.get("Category"));
+            searchDataList.add(new SearchItem(item.get("Product"), item.get("Category")));
         }
         filter(editText.getText().toString());
     }

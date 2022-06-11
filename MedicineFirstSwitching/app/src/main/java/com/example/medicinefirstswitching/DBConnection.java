@@ -49,7 +49,7 @@ public class DBConnection {
         this.context = context;
         mArrayList = new ArrayList<>();
         GetData task = new GetData();
-        task.execute("http://61.102.138.116/getDataCountry.php" + "?nation=\"" + country + "\"");
+        task.execute("http://61.102.138.116/getDataCountry.php" + "?Nation=\"" + country + "\"");
     }
 
     public ArrayList<HashMap<String, String>> getmArrayList() {
@@ -132,9 +132,9 @@ public class DBConnection {
                 hashMap.put(TAG_WARNING, warning);
 
                 mArrayList.add(hashMap);
-                if(context instanceof SearchActivity) ((SearchActivity) this.context).updateData(mArrayList);
-                if(context instanceof ResultActivity) {/*result 업데이트 실행*/};
             }
+            if(context instanceof SearchActivity) ((SearchActivity) this.context).updateData(mArrayList);
+            if(context instanceof ResultActivity) {/*result 업데이트 실행*/};
         } catch (JSONException e) {
             Log.d("DBdebug", "showResult : ", e);
         }
