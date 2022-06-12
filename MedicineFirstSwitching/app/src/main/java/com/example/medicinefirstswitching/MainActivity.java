@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView slideCountryImage;
     private ImageButton slideSearchBtn;
     private FloatingActionButton mapBtn;
-    static final int [] countryFlagIds = {R.drawable.unitedstates, R.drawable.china, R.drawable.england, R.drawable.france, R.drawable.germany, R.drawable.india,
+    static final int [] countryFlagIds = {R.drawable.unitedstates, R.drawable.china, R.drawable.uk, R.drawable.france, R.drawable.germany, R.drawable.india,
             R.drawable.italy, R.drawable.japan, R.drawable.mexico, R.drawable.netherlands, R.drawable.russia, R.drawable.poland};
     static final String[] countryList = {"미국","중국","영국","프랑스","독일","인도","이탈리아","일본","멕시코","네덜란드","러시아","폴란드"};
 
