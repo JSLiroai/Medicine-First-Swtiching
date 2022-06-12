@@ -1,8 +1,8 @@
 package com.example.medicinefirstswitching.RecyclerView;
 
 public class Item {
-    String name;
-    String imageSrc;
+    public String name;
+    public String imageSrc;
 
     public Item(String name, String imageSrc){
         this.name = name;

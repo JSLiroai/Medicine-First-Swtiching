@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,13 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.medicinefirstswitching.DBConnection;
-import com.example.medicinefirstswitching.MainActivity;
-import com.example.medicinefirstswitching.R;
 import com.example.medicinefirstswitching.RecyclerView.Item;
 import com.example.medicinefirstswitching.RecyclerView.ResultAdapter;
 import com.example.medicinefirstswitching.Searching.SearchActivity;
-import com.example.medicinefirstswitching.Searching.SearchItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +46,8 @@ public class ResultActivity extends AppCompatActivity {
     private ImageView toggleExplain;
     private ImageView toggleReview;
     private ImageView toggleSimilar;
+
+    private Button moreReviewBtn;
 
 
     //입력될 값
@@ -139,6 +138,16 @@ public class ResultActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+        //REVIEW
+        moreReviewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ReviewActivity.class);
+                intent.putExtra("Sting-item", testList.get(0).name);
+                startActivity(intent);
+            }
+        });
     }
 
     public void init(){
@@ -175,6 +184,8 @@ public class ResultActivity extends AppCompatActivity {
         medicineIngredient = findViewById(R.id.result_tv_ingredient);
         medicineEffectiveness = findViewById(R.id.result_tv_effectiveness);
         medicineWarning = findViewById(R.id.result_tv_warning);
+
+        moreReviewBtn = findViewById(R.id.result_review_more);
     }
     private void createDataList() {
         resultDataList = new ArrayList<ResultItem>();

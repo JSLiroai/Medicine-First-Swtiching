@@ -18,6 +18,6 @@
     <string name="pick_place">Choose a place</string>
     <string name="map_api_key">AIzaSyB6y2LYcOW1m44uiEGWSWOB5xKtA3xyALw</string>
 
-    <string name="db_ip" >https://61.102.138.116/getData.php</string>
-    <string name="db_ip2" >https://61.102.138.116/getDataCountry.php</string>
+    <string name="db_ip">https://61.102.138.116/getData.php</string>
+    <string name="db_ip2">https://61.102.138.116/getDataCountry.php</string>
 </resources>
