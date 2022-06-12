@@ -157,6 +157,12 @@ public class ResultActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(resultDataList.size() != 0) rdb = new ReviewConnection(resultDataList.get(index).getProduct(), ResultActivity.this);
+    }
+
     public void init(){
         //VIEW MATCHING
         recyclerView = (RecyclerView)findViewById(R.id.result_recyclerview);
@@ -254,7 +260,7 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     public void updateReviewData(ArrayList<HashMap<String, String>> dbList) {
-        int r1 = 0, r2 = 0, r3 = 0, r4 = 0, r5 = 0;
+        float r1 = 0, r2 = 0, r3 = 0, r4 = 0, r5 = 0;
         for(HashMap<String, String> item : dbList) {
             int rate = Integer.parseInt(item.get("Rate"));
             switch (rate) {
@@ -264,15 +270,15 @@ public class ResultActivity extends AppCompatActivity {
                 case 4: r4++; break;
                 case 5: r5++; break; }
         }
-        float rAvg = ((float) (r1*1+r2*2+r3*3+r4*4+r5*5))/(r1+r2+r3+r4+r5);
+        float rAvg = (r1*1+r2*2+r3*3+r4*4+r5*5)/(r1+r2+r3+r4+r5);
 
         ((RatingBar) findViewById(R.id.review_rate_avg_star)).setRating(rAvg);
         ((TextView) findViewById(R.id.review_rate_avg)).setText(String.format("%.1f",rAvg));
-        ((ProgressBar)  findViewById(R.id.review_rate_5)).setProgress(r5/(r1+r2+r3+r4+r5)*100);
-        ((ProgressBar)  findViewById(R.id.review_rate_4)).setProgress(r4/(r1+r2+r3+r4+r5)*100);
-        ((ProgressBar)  findViewById(R.id.review_rate_3)).setProgress(r3/(r1+r2+r3+r4+r5)*100);
-        ((ProgressBar)  findViewById(R.id.review_rate_2)).setProgress(r2/(r1+r2+r3+r4+r5)*100);
-        ((ProgressBar)  findViewById(R.id.review_rate_1)).setProgress(r1/(r1+r2+r3+r4+r5)*100);
+        ((ProgressBar)  findViewById(R.id.review_rate_5)).setProgress(Math.round(r5/(r1+r2+r3+r4+r5)*100));
+        ((ProgressBar)  findViewById(R.id.review_rate_4)).setProgress(Math.round(r4/(r1+r2+r3+r4+r5)*100));
+        ((ProgressBar)  findViewById(R.id.review_rate_3)).setProgress(Math.round(r3/(r1+r2+r3+r4+r5)*100));
+        ((ProgressBar)  findViewById(R.id.review_rate_2)).setProgress(Math.round(r2/(r1+r2+r3+r4+r5)*100));
+        ((ProgressBar)  findViewById(R.id.review_rate_1)).setProgress(Math.round(r1/(r1+r2+r3+r4+r5)*100));
     }
 
     public void setData(){

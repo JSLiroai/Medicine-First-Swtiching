@@ -60,7 +60,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:hint="리뷰 내용을 작성하세요\n\n"
+        android:hint="리뷰 내용을 작성하세요"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -93,8 +93,8 @@
         android:minHeight="0dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
-        android:text="리뷰 작성"
-        android:textColor="@color/black"
+        android:text="리뷰 제출"
+        android:textColor="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/review_edit_id" />
 
@@ -105,8 +105,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:indeterminateTint="#FFC107"
+        android:isIndicator="false"
+        android:numStars="5"
         android:progressTint="#FFC107"
+        android:rating="0"
         android:secondaryProgressTint="#FFC107"
+        android:stepSize="1.0"
         app:layout_constraintBottom_toTopOf="@+id/review_edit_context"
         app:layout_constraintStart_toStartOf="@+id/review_edit_context" />
 

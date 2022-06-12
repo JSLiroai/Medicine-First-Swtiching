@@ -48,7 +48,7 @@ public class ReviewAdapter extends BaseAdapter {
         TextView textContext = (TextView)view.findViewById(R.id.review_context);
         RatingBar rateBar = (RatingBar)view.findViewById(R.id.review_rate);
 
-        textID.setText(mdata.get(position).getId());
+        textID.setText("ID:" + mdata.get(position).getId());
         textContext.setText(mdata.get(position).getContext());
         rateBar.setRating(mdata.get(position).getRate());
 
