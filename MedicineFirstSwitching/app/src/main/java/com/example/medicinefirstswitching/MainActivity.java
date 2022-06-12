@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         add(new Item("지사제","aaa.jpg"));
         add(new Item("치질약","aaa.jpg"));
         add(new Item("관절염","aaa.jpg"));
-        add(new Item("가스릴리프","aaa.jpg"));
+        add(new Item("수면제","aaa.jpg"));
     }};
 
     //Intent 넘길 값

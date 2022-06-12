@@ -2,6 +2,7 @@ package com.example.medicinefirstswitching.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,36 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
     public void onBindViewHolder(MyViewHolder holder, int position) {
             Item item = list.get(position);
             holder.button.setText(item.name);
+            holder.button.setTextColor(Color.BLACK);
+            holder.button.setTextSize(20);
+
+            switch (item.getName()){
+                case "감기약":
+                    holder.button.setBackgroundResource(R.drawable.cold);
+                    break;
+                case "진통제":
+                    holder.button.setBackgroundResource(R.drawable.painrelief);
+                    break;
+                case "소화제":
+                    holder.button.setBackgroundResource(R.drawable.idigestion);
+                    break;
+                case "멀미약":
+                    holder.button.setBackgroundResource(R.drawable.motionsick);
+                    break;
+                case "지사제":
+                    holder.button.setBackgroundResource(R.drawable.diarrhea);
+                    break;
+                case "치질약":
+                    holder.button.setBackgroundResource(R.drawable.hemorrhoids);
+                    break;
+                case "관절염":
+                    holder.button.setBackgroundResource(R.drawable.joint);
+                    break;
+                case "수면제":
+                    holder.button.setBackgroundResource(R.drawable.sleeping);
+                    break;
+            }
+            holder.button.setAlpha(0.5f);
             holder.button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
