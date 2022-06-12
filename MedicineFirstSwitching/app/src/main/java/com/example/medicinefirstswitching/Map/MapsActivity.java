@@ -124,14 +124,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
             @Override
-            // Return null here, so that getInfoContents() is called next.
             public View getInfoWindow(Marker arg0) {
                 return null;
             }
 
             @Override
             public View getInfoContents(Marker marker) {
-                // Inflate the layouts for the info window, title and snippet.
                 View infoWindow = getLayoutInflater().inflate(R.layout.map_info_contents,
                         (FrameLayout) findViewById(R.id.map), false);
 
@@ -145,13 +143,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        // Prompt the user for permission.
         getLocationPermission();
 
-        // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
 
-        // Get the current location of the device and set the position of the map.
         getDeviceLocation();
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

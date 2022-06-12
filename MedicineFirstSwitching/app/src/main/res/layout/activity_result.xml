@@ -501,16 +501,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/result_tv_review"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/result_review_root"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/result_review_more"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="리스트뷰 (최근 리뷰 3개)가 들어가고, 더보기를 누를경우 모든 리뷰가 들어가도록한다."
-                    android:textSize="13sp" />
+                    android:layout_gravity="right"
+                    android:background="#00ff0000"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:text="더보기"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 

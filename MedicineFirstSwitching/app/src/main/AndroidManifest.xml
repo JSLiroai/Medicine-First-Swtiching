@@ -16,7 +16,7 @@
         android:theme="@style/Theme.MedicineFirstSwitching"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ReviewActivity"
+            android:name=".Review.ReviewActivity"
             android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
