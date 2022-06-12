@@ -84,7 +84,7 @@ public class SearchActivity extends AppCompatActivity {
         symptomDataList = new ArrayList<SearchItem>();
         searchDataList = new ArrayList<SearchItem>();
 
-        symptomDataList.add(new SearchItem("painkiller","증상"));
+        symptomDataList.add(new SearchItem("진통제","증상"));
         symptomDataList.add(new SearchItem("감기약","증상"));
         symptomDataList.add(new SearchItem("heartburn","증상"));
         symptomDataList.add(new SearchItem("laxative","증상"));

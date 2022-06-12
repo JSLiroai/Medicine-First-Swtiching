@@ -128,18 +128,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-
                 android:alpha="0"
-
-                android:paddingRight="20dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:outlineProvider="none"
-                android:gravity="center"
                 android:background="#00FFFFFF"
-                android:src="@drawable/ic_search" />
+
+                android:clickable="true"
+                android:gravity="center"
+                android:outlineProvider="none"
+                android:paddingTop="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="20dp"
+                android:src="@drawable/ic_search"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

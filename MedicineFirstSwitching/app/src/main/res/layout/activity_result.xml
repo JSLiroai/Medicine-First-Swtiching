@@ -389,11 +389,12 @@
                         android:id="@+id/result_tv_ingredient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Acetaminophen 325Mg, Dextromethorphan Hbr 10Mg"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp" />
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="Acetaminophen 325Mg, Dextromethorphan Hbr 10Mg"
+                        android:textSize="13sp" />
                 </LinearLayout>
                 <!-- 약품 주요성분 END-->
 
@@ -414,11 +415,12 @@
                         android:id="@+id/result_tv_effectiveness"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="두통, 코막힘, 발열, 인후통, 기침"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp" />
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="두통, 코막힘, 발열, 인후통, 기침"
+                        android:textSize="13sp" />
                 </LinearLayout>
                 <!-- 약품 효능 END-->
 
@@ -438,11 +440,12 @@
                         android:id="@+id/result_tv_warning"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="24시간당 4회를 초과금지. 성인 및 12세 이상 어린이 - 4시간마다 물과 함께 리퀴캡 2개. 4세에서 12세 미만의 어린이는 의사에게 문의하십시오."
                         android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp" />
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="24시간당 4회를 초과금지. 성인 및 12세 이상 어린이 - 4시간마다 물과 함께 리퀴캡 2개. 4세에서 12세 미만의 어린이는 의사에게 문의하십시오."
+                        android:textSize="13sp" />
 
                 </LinearLayout>
                 <!-- 약품 주의사항 END-->
@@ -502,11 +505,12 @@
                     android:id="@+id/result_tv_review"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="리스트뷰 (최근 리뷰 3개)가 들어가고, 더보기를 누를경우 모든 리뷰가 들어가도록한다."
                     android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"/>
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="리스트뷰 (최근 리뷰 3개)가 들어가고, 더보기를 누를경우 모든 리뷰가 들어가도록한다."
+                    android:textSize="13sp" />
 
             </LinearLayout>
 

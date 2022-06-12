@@ -185,7 +185,7 @@ public class ResultActivity extends AppCompatActivity {
             //약품의 index가 현재 화면의 index와 일치하지 않으면 SimilarDataList에 담긴다
             if(index!=count){
                 similarDataList.add(data);
-                Log.d("[SIMILARDATALIST]", data.toString());
+                Log.d("[SIMILARDATALIST INSERT]", data.toString());
             }
             count++;
 
@@ -207,7 +207,7 @@ public class ResultActivity extends AppCompatActivity {
             //약품의 index가 현재 화면의 index와 일치하지 않으면 SimilarDataList에 담긴다
             if(index!=count){
                 similarDataList.add(data);
-                Log.d("[SIMILARDATALIST]", data.toString());
+                Log.d("[SIMILARDATALIST INSERT]", data.toString());
             }
             count++;
 

@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         searchButton = (Button) findViewById(R.id.main_btn_search);
         mapBtn = (FloatingActionButton) findViewById(R.id.main_fbn_location);
 
-
         //SEARCH BUTTON
         searchButton.setOnClickListener(new View.OnClickListener(){
 
@@ -95,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
 
         //SPINNER
@@ -134,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             //패널의 상태가 변했을 때
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-
             }
         });
 
