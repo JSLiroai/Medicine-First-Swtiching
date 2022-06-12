@@ -7,6 +7,7 @@ public class ResultItem {
     private String ingredient;
     private String effectiveness;
     private String warning;
+    private int index;
 
     public ResultItem(String product, String company, String form, String ingredient, String effectiveness, String warning) {
         this.product = product;
@@ -17,6 +18,13 @@ public class ResultItem {
         this.warning = warning;
 
     }
+
+    public void setIndex(int index){
+        this.index = index;
+    }
+
+    public int getIndex() { return index; }
+
 
 
     public String getProduct() {

@@ -133,7 +133,7 @@ public class DBConnection {
                 mArrayList.add(hashMap);
             }
             if(context instanceof SearchActivity) ((SearchActivity) this.context).updateData(mArrayList);
-            if(context instanceof ResultActivity) {/*result 업데이트 실행*/};
+            if(context instanceof ResultActivity) ((ResultActivity) this.context).updateData(mArrayList);
         } catch (JSONException e) {
             Log.d("DBdebug", "showResult : ", e);
         }

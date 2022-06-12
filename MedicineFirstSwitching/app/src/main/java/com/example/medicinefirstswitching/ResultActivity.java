@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,9 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.medicinefirstswitching.DBConnection;
+import com.example.medicinefirstswitching.MainActivity;
+import com.example.medicinefirstswitching.R;
 import com.example.medicinefirstswitching.RecyclerView.Item;
 import com.example.medicinefirstswitching.RecyclerView.ResultAdapter;
 import com.example.medicinefirstswitching.Searching.SearchActivity;
+import com.example.medicinefirstswitching.Searching.SearchItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,8 +51,6 @@ public class ResultActivity extends AppCompatActivity {
     private ImageView toggleReview;
     private ImageView toggleSimilar;
 
-    private Button moreReviewBtn;
-
 
     //입력될 값
     private TextView titleMedicineName;
@@ -70,20 +72,15 @@ public class ResultActivity extends AppCompatActivity {
     String country;
     String symptom;
     int countryFlagId;
+    int index;
 
     //DataList
     private ArrayList<ResultItem> resultDataList;
+    private ArrayList<ResultItem> similarDataList;
+
 
     //DB
     private DBConnection db;
-
-    //TEST ARRAY
-    public ArrayList<Item> testList = new ArrayList<Item>() {{
-        add(new Item("Tylenol","aaa.jpg"));
-        add(new Item("Zicam","aaa.jpg"));
-        add(new Item("Aspirin","aaa.jpg"));
-
-    }};
 
 
     @Override
@@ -97,6 +94,7 @@ public class ResultActivity extends AppCompatActivity {
         symptom = intent.getStringExtra("String-Symptom");
         country = intent.getStringExtra("String-Country");
         countryFlagId = intent.getIntExtra("Int-CountryFlagId", R.drawable.unitedstates);
+        index = intent.getIntExtra("Int-Index", 0);
 
         db = new DBConnection(country,symptom, ResultActivity.this);
 
@@ -110,7 +108,7 @@ public class ResultActivity extends AppCompatActivity {
         expandMedicineReview.setOnClickListener(new ExpandContainerListener(medicineReview, toggleReview));
         expandMedicineTranslate.setOnClickListener(new ExpandContainerListener(medicineTranslate, toggleTranslate));
 
-
+        createDataList();
 
         //CLOSE BUTTON
         closeButton.setOnClickListener(new View.OnClickListener(){
@@ -133,21 +131,6 @@ public class ResultActivity extends AppCompatActivity {
             }
         });
 
-        //RECYCLERVIEW
-        adapter = new ResultAdapter(getApplicationContext(), testList);
-        layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-        //REVIEW
-        moreReviewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ReviewActivity.class);
-                intent.putExtra("Sting-item", testList.get(0).name);
-                startActivity(intent);
-            }
-        });
     }
 
     public void init(){
@@ -184,32 +167,64 @@ public class ResultActivity extends AppCompatActivity {
         medicineIngredient = findViewById(R.id.result_tv_ingredient);
         medicineEffectiveness = findViewById(R.id.result_tv_effectiveness);
         medicineWarning = findViewById(R.id.result_tv_warning);
-
-        moreReviewBtn = findViewById(R.id.result_review_more);
     }
     private void createDataList() {
+
+        int count = 0;
+
         resultDataList = new ArrayList<ResultItem>();
+        similarDataList = new ArrayList<ResultItem>();
+
         ArrayList<HashMap<String, String>> dbList = db.getmArrayList();
 
         for(HashMap<String, String> item : dbList) {
             ResultItem data = new ResultItem(item.get("Product"), item.get("Company"), item.get("Form"),item.get("Ingredient"), item.get("Effectiveness"),item.get("Warning"));
+            data.setIndex(count);
             resultDataList.add(data);
-            Log.d("[DATA INSERT]", data.toString());
+
+            //약품의 index가 현재 화면의 index와 일치하지 않으면 SimilarDataList에 담긴다
+            if(index!=count){
+                similarDataList.add(data);
+                Log.d("[SIMILARDATALIST]", data.toString());
+            }
+            count++;
+
+            Log.d("[RESULTDATALIST INSERT]", data.toString());
         }
     }
 
     public void updateData(ArrayList<HashMap<String, String>> dbList){
         resultDataList.clear();
+        similarDataList.clear();
+
+        int count = 0;
+
         for(HashMap<String, String> item : dbList) {
             ResultItem data = new ResultItem(item.get("Product"), item.get("Company"), item.get("Form"),item.get("Ingredient"), item.get("Effectiveness"),item.get("Warning"));
             resultDataList.add(data);
-            Log.d("[DATA INSERT]", data.toString());
+            data.setIndex(count);
+
+            //약품의 index가 현재 화면의 index와 일치하지 않으면 SimilarDataList에 담긴다
+            if(index!=count){
+                similarDataList.add(data);
+                Log.d("[SIMILARDATALIST]", data.toString());
+            }
+            count++;
+
+            Log.d("[RESULTDATALIST INSERT]", data.toString());
         }
+
+        setData();
+        //RECYCLERVIEW
+        adapter = new ResultAdapter(getApplicationContext(), similarDataList, koreanMedicine, country, symptom, countryFlagId);
+        layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
     }
 
 
     public void setData(){
-        ResultItem settingItem = resultDataList.get(0);
+        ResultItem settingItem = resultDataList.get(index);
 
         //약 이름 제목 설정
         titleMedicineName.setText(settingItem.getProduct());
@@ -221,9 +236,9 @@ public class ResultActivity extends AppCompatActivity {
         foreignMedicineName.setText(settingItem.getProduct());
 
         //약품 이미지 설정
-        String imageURL = "https://mfs-bucket.s3.ap-northeast-2.amazonaws.com/" + settingItem.getProduct() + "jpg";
+        String imageURL = "https://mfs-bucket.s3.ap-northeast-2.amazonaws.com/" + settingItem.getProduct() + ".jpg";
 
-        //Picasso.get().load(imageURL).into(medicineImage);
+        Picasso.get().load(imageURL).into(medicineImage);
 
         //약품 설명 설정
         medicineName.setText(settingItem.getProduct());

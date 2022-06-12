@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton slideSearchBtn;
     private FloatingActionButton mapBtn;
     static final int [] countryFlagIds = {R.drawable.unitedstates, R.drawable.china, R.drawable.england, R.drawable.france, R.drawable.germany, R.drawable.india,
-            R.drawable.italy, R.drawable.japan, R.drawable.mexico, R.drawable.netherlands, R.drawable.russia};
+            R.drawable.italy, R.drawable.japan, R.drawable.mexico, R.drawable.netherlands, R.drawable.russia, R.drawable.poland};
 
     public ArrayList<Item> testList = new ArrayList<Item>() {{
         add(new Item("감기약","aaa.jpg"));
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Intent 넘길 값
     String symptom = "";
-    String country = "United States";
+    String country = "미국";
     int countryFlagId = countryFlagIds[0];
 
 
@@ -142,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-              startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(intent);
             }
         });
 
