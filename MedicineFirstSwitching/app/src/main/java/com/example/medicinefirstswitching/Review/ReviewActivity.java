@@ -78,7 +78,7 @@ public class ReviewActivity extends AppCompatActivity {
         commitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!editID.getText().equals("") && editRate.getRating() != 0)
+                if(!editID.getText().equals("") && !editContext.getText().equals("") && editRate.getRating() != 0)
                     commitReview(editID.getText().toString(), editContext.getText().toString(), editRate.getRating());
             }
         });
