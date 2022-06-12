@@ -88,9 +88,13 @@ public class SearchActivity extends AppCompatActivity {
         symptomDataList.add(new SearchItem("진통제","증상"));
         symptomDataList.add(new SearchItem("감기약","증상"));
         symptomDataList.add(new SearchItem("소화제","증상"));
-        symptomDataList.add(new SearchItem("laxative","증상"));
-        symptomDataList.add(new SearchItem("antidiarrheal","증상"));
-        symptomDataList.add(new SearchItem("hemorrhoid","증상"));
+        symptomDataList.add(new SearchItem("변비약","증상"));
+        symptomDataList.add(new SearchItem("지사제","증상"));
+        symptomDataList.add(new SearchItem("치질약","증상"));
+        symptomDataList.add(new SearchItem("멀미약","증상"));
+        symptomDataList.add(new SearchItem("관절염","증상"));
+        symptomDataList.add(new SearchItem("수면제","증상"));
+        symptomDataList.add(new SearchItem("속쓰림","증상"));
 
         ArrayList<HashMap<String, String>> dbList = db.getmArrayList();
 
