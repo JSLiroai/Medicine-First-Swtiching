@@ -128,8 +128,7 @@ public class ResultActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
