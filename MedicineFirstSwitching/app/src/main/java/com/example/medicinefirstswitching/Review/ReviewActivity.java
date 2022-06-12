@@ -111,6 +111,7 @@ public class ReviewActivity extends AppCompatActivity {
         }
         float rAvg = (r1*1+r2*2+r3*3+r4*4+r5*5)/(r1+r2+r3+r4+r5);
 
+        if(Float.isNaN(rAvg)) rAvg = 0;
         ((RatingBar) findViewById(R.id.review_rate_avg_star)).setRating(rAvg);
         ((TextView) findViewById(R.id.review_rate_avg)).setText(String.format("%.1f",rAvg));
         ((ProgressBar)  findViewById(R.id.review_rate_5)).setProgress(Math.round(r5/(r1+r2+r3+r4+r5)*100));
