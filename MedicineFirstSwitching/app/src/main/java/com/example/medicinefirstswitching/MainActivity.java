@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -37,16 +38,17 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton mapBtn;
     static final int [] countryFlagIds = {R.drawable.unitedstates, R.drawable.china, R.drawable.england, R.drawable.france, R.drawable.germany, R.drawable.india,
             R.drawable.italy, R.drawable.japan, R.drawable.mexico, R.drawable.netherlands, R.drawable.russia, R.drawable.poland};
+    static final String[] countryList = {"미국","중국","영국","프랑스","독일","인도","이탈리아","일본","멕시코","네덜란드","러시아","폴란드"};
 
-    public ArrayList<Item> testList = new ArrayList<Item>() {{
-        add(new Item("감기약","aaa.jpg"));
-        add(new Item("진통제","aaa.jpg"));
-        add(new Item("소화제","aaa.jpg"));
-        add(new Item("멀미약","aaa.jpg"));
-        add(new Item("지사제","aaa.jpg"));
-        add(new Item("치질약","aaa.jpg"));
-        add(new Item("관절염","aaa.jpg"));
-        add(new Item("수면제","aaa.jpg"));
+    public ArrayList<Item> symptomList = new ArrayList<Item>() {{
+        add(new Item("감기약",R.drawable.cold));
+        add(new Item("진통제",R.drawable.painrelief));
+        add(new Item("소화제",R.drawable.idigestion));
+        add(new Item("멀미약",R.drawable.motionsick));
+        add(new Item("지사제",R.drawable.diarrhea));
+        add(new Item("치질약",R.drawable.hemorrhoids));
+        add(new Item("관절염",R.drawable.joint));
+        add(new Item("수면제",R.drawable.sleeping));
     }};
 
     //Intent 넘길 값
@@ -97,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         //SPINNER
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,R.layout.custom_simple_dropdown_item_1line,countryList);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setSelection(0);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -146,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //RECYCLERVIEW
-        adapter = new MainAdapter(getApplicationContext(), testList);
+        adapter = new MainAdapter(getApplicationContext(), symptomList);
         layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
