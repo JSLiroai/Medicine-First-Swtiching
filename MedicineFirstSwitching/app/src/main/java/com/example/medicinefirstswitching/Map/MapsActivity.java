@@ -24,6 +24,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -84,6 +85,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ConstraintLayout mapInfoRoot;
     private LayoutInflater minflater;
     private ConstraintLayout mapinfoCard;
+    private ImageButton backBtn;
 
     @Override
     public void onBackPressed() {
@@ -108,6 +110,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         minflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         minflater.inflate(R.layout.map_info_card, mapInfoRoot,true);
         mapInfoRoot.setVisibility(View.INVISIBLE);
+
+        backBtn = findViewById(R.id.map_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

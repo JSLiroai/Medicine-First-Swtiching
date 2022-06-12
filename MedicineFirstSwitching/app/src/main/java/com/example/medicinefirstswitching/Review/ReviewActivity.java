@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.medicinefirstswitching.R;
-import com.example.medicinefirstswitching.Searching.SearchItem;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -64,7 +63,7 @@ public class ReviewActivity extends AppCompatActivity {
     private void init() {
         reviewStatusRoot = (ConstraintLayout) findViewById(R.id.review_rate_root);
         reviewListView = (ListView) findViewById(R.id.review_listview_content);
-        backbtn = (ImageButton) findViewById(R.id.review_back);
+        backbtn = (ImageButton) findViewById(R.id.map_back);
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
