@@ -7,13 +7,13 @@ public class Item {
 
     public String name;
 
-    public String getImageSrc() {
+    public int getImageSrc() {
         return imageSrc;
     }
 
-    public String imageSrc;
+    public int imageSrc;
 
-    public Item(String name, String imageSrc){
+    public Item(String name, int imageSrc){
         this.name = name;
         this.imageSrc = imageSrc;
     }

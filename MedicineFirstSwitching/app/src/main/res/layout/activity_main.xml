@@ -53,11 +53,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/main_tv_travel"
-            app:layout_constraintBottom_toBottomOf="@id/main_tv_travel"
+            app:layout_constraintBottom_toTopOf="@id/main_btn_search"
             app:layout_constraintTop_toTopOf="@id/main_tv_travel"
-            android:layout_marginLeft="10dp"
-
-            android:entries="@array/country" />
+            android:layout_marginLeft="10dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
 
