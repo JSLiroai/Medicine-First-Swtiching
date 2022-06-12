@@ -42,6 +42,7 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<SearchItem> searchDataList;
     private ArrayList<RecentItem> recentDataList;
     private String tCountry = "대한민국";
+    private int countryFlagId;
 
     private ImageButton searchBtn;
     private EditText editText;
@@ -58,7 +59,7 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String symptom = intent.getStringExtra("symptom");
         tCountry = intent.getStringExtra("country");
-        int countryFlagId = intent.getIntExtra("countryFlagId", R.drawable.unitedstates);
+        countryFlagId = intent.getIntExtra("countryFlagId", R.drawable.unitedstates);
 
         editText = findViewById(R.id.search_edit_searchText);
         editText.setText(symptom);
@@ -86,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
 
         symptomDataList.add(new SearchItem("진통제","증상"));
         symptomDataList.add(new SearchItem("감기약","증상"));
-        symptomDataList.add(new SearchItem("heartburn","증상"));
+        symptomDataList.add(new SearchItem("소화제","증상"));
         symptomDataList.add(new SearchItem("laxative","증상"));
         symptomDataList.add(new SearchItem("antidiarrheal","증상"));
         symptomDataList.add(new SearchItem("hemorrhoid","증상"));
@@ -290,6 +291,7 @@ public class SearchActivity extends AppCompatActivity {
             intent.putExtra("String-SearchedItem",checkTarget.getItem());
             intent.putExtra("String-Symptom",checkTarget.getExplain());
             intent.putExtra("String-Country",tCountry);
+            intent.putExtra("Int-CountryFlagId", countryFlagId);
             startActivity(intent);
         }
     }

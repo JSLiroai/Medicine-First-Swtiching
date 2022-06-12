@@ -40,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<Item> testList = new ArrayList<Item>() {{
         add(new Item("감기약","aaa.jpg"));
-        add(new Item("속쓰림","aaa.jpg"));
-        add(new Item("변비약","aaa.jpg"));
+        add(new Item("진통제","aaa.jpg"));
+        add(new Item("소화제","aaa.jpg"));
+        add(new Item("멀미약","aaa.jpg"));
         add(new Item("지사제","aaa.jpg"));
         add(new Item("치질약","aaa.jpg"));
-        add(new Item("멀미약","aaa.jpg"));
         add(new Item("관절염","aaa.jpg"));
         add(new Item("가스릴리프","aaa.jpg"));
     }};
