@@ -2,6 +2,8 @@ package com.example.medicinefirstswitching.Map;
 
 import static com.google.android.libraries.places.api.model.Place.BusinessStatus.OPERATIONAL;
 
+import android.content.res.Resources;
+
 import com.google.android.libraries.places.api.model.Place;
 
 import org.json.JSONArray;
@@ -12,8 +14,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.example.medicinefirstswitching.R;
+
 public class JsonParser {
     public static final String OPEN = "OPERATIONAL";
+    private final String MAPS_API_KEY = "AIzaSyB6y2LYcOW1m44uiEGWSWOB5xKtA3xyALw";
 
     private HashMap<String,String> parseJsonObject(JSONObject object) {
         HashMap<String,String> dataList = new HashMap<>();
@@ -43,6 +48,15 @@ public class JsonParser {
                 dataList.put("status", status);
             } catch (JSONException e) {
                 dataList.put("status", "");
+            }
+            try {
+                String photo_refer = object.getJSONArray("photos").optJSONObject(0).getString("photo_reference");
+                String photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference="
+                        + photo_refer + "&key=" + MAPS_API_KEY;
+
+                dataList.put("photo_url", photo_url);
+            } catch (JSONException e) {
+                dataList.put("photo_url", "");
             }
 
         } catch (JSONException e) {

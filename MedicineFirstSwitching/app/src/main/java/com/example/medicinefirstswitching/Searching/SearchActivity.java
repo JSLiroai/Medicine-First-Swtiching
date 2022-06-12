@@ -101,7 +101,6 @@ public class SearchActivity extends AppCompatActivity {
     public void updateData(ArrayList<HashMap<String, String>> dbList){
         searchDataList.clear();
         for(HashMap<String, String> item : dbList) {
-            Log.d("", item.get("Category"));
             searchDataList.add(new SearchItem(item.get("Product"), item.get("Category")));
         }
         filter(editText.getText().toString());

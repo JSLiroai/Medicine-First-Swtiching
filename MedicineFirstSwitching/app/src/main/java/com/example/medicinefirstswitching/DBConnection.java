@@ -42,7 +42,6 @@ public class DBConnection {
         mArrayList = new ArrayList<>();
         GetData task = new GetData();
         task.execute("http://61.102.138.116/getData.php" + "?Nation=\"" + country + "\"&Category=\"" + symptom + "\"");
-
     }
 
     public DBConnection(String country, AppCompatActivity context) {

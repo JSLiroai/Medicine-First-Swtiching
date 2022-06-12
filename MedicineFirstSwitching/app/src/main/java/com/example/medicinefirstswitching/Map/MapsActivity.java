@@ -24,6 +24,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -46,6 +47,7 @@ import com.google.android.libraries.places.api.model.PlaceLikelihood;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -289,9 +291,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 ((TextView) findViewById(R.id.map_place_type)).setText(item.get("type"));
                 ((TextView) findViewById(R.id.map_place_address)).setText(item.get("address"));
                 ((TextView) findViewById(R.id.map_place_status)).setText(item.get("status"));
+                if(!item.get("photo_url").equals("")) {
+                    Picasso.get().load(item.get("photo_url")).into((ImageView) findViewById(R.id.map_place_photo));
+                    ((ImageView) findViewById(R.id.map_place_photo)).setVisibility(View.VISIBLE);
+                }
+                else ((ImageView) findViewById(R.id.map_place_photo)).setVisibility(View.INVISIBLE);
             }
         }
-        mapInfoRoot.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_up));
+        if(mapInfoRoot.getVisibility() == View.INVISIBLE) mapInfoRoot.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_up));
         mapInfoRoot.setVisibility(View.VISIBLE);
     }
 
