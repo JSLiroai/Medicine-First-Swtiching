@@ -44,7 +44,7 @@ public class JsonParser {
                 dataList.put("address", "");
             }
             try {
-                String status = object.getString("business_status") == OPEN ? "영업 중": "영업 종료";
+                String status = object.getString("business_status").equals(OPEN) ? "영업 중": "영업 종료";
                 dataList.put("status", status);
             } catch (JSONException e) {
                 dataList.put("status", "");
